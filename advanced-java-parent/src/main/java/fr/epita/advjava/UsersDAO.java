@@ -3,10 +3,11 @@ package fr.epita.advjava;
 import fr.epita.advjava.datamodel.User;
 import fr.epita.advjava.services.Configuration;
 import fr.epita.advjava.services.exceptions.DatamodelCreationException;
+import fr.epita.advjava.services.exceptions.DatamodelSearchException;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsersDAO {
 
@@ -25,7 +26,29 @@ public class UsersDAO {
     }
 
 
-    public void search(User user){
+    public List search(User criteria) throws DatamodelSearchException {
+        List users = new ArrayList();
+        try {
+            Connection connection = Configuration.getConnection();
+            PreparedStatement selectStatement =
+                    connection.prepareStatement("SELECT ID,NAME FROM USERS WHERE ID = ? AND NAME = ?");
+            selectStatement.setString(2, criteria.getName());
+            selectStatement.setInt(1, criteria.getId());
 
+            ResultSet resultSet = selectStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                String name = resultSet.getString("NAME");
+                User user = new User();
+                user.setName(name);
+                user.setId(id);
+                users.add(user);
+            }
+        }catch (SQLException e){
+            DatamodelSearchException dse = new DatamodelSearchException();
+            dse.initCause(e);
+            throw dse;
+        }
+        return users;
     }
 }

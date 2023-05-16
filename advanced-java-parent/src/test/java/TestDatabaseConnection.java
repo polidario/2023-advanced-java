@@ -1,12 +1,14 @@
 import fr.epita.advjava.UsersDAO;
 import fr.epita.advjava.datamodel.User;
 import fr.epita.advjava.services.exceptions.DatamodelCreationException;
+import fr.epita.advjava.services.exceptions.DatamodelSearchException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.*;
+import java.util.List;
 
 public class TestDatabaseConnection {
 
@@ -44,24 +46,21 @@ public class TestDatabaseConnection {
         Assertions.assertEquals(name, "Thomas");
 
     }    @Test
-    public void testSearch() throws SQLException {
+    public void testSearch() throws SQLException, DatamodelSearchException {
 
         //given (handled by setup())
         UsersDAO dao = new UsersDAO();
-        User user = new User();
-        user.setId(1);
-        user.setName("Thomas");
+        this.connection.prepareStatement("INSERT INTO USERS(ID, NAME) VALUES (1, 'Thomas')").execute();
 
         //when
-        PreparedStatement selectStatement = connection.prepareStatement("SELECT ID,NAME FROM USERS");
-        ResultSet resultSet = selectStatement.executeQuery();
-        while (resultSet.next()){
-            int id = resultSet.getInt("ID");
-            String name = resultSet.getString("NAME");
-            System.out.println(id + " " + name);
-        }
+        User criteria = new User();
+        criteria.setId(1);
+        criteria.setName("Thomas");
+        List users = dao.search(criteria);
 
         //then
+        Assertions.assertEquals(users.size(), 1);
+
 
     }
 
