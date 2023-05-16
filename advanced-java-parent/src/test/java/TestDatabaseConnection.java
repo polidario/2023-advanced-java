@@ -1,3 +1,5 @@
+import fr.epita.advjava.UsersDAO;
+import fr.epita.advjava.datamodel.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,14 +20,28 @@ public class TestDatabaseConnection {
     }
 
     @Test
-    public void test() throws SQLException {
+    public void testCreate() throws SQLException {
 
         //given (handled by setup())
+        UsersDAO dao = new UsersDAO();
+        User user = new User();
+        user.setId(1);
+        user.setName("Thomas");
+
 
         //when
-        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO USERS(ID, NAME) VALUES (0, 'Thomas')");
-        insertStatement.execute();
+        dao.create(user);
 
+        //then
+
+    }    @Test
+    public void testSearch() throws SQLException {
+
+        //given (handled by setup())
+        UsersDAO dao = new UsersDAO();
+        User user = new User();
+        user.setId(1);
+        user.setName("Thomas");
 
         //when
         PreparedStatement selectStatement = connection.prepareStatement("SELECT ID,NAME FROM USERS");
@@ -35,6 +51,8 @@ public class TestDatabaseConnection {
             String name = resultSet.getString("NAME");
             System.out.println(id + " " + name);
         }
+
+        //then
 
     }
 
