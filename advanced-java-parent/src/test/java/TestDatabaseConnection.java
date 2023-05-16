@@ -1,6 +1,8 @@
 import fr.epita.advjava.UsersDAO;
 import fr.epita.advjava.datamodel.User;
+import fr.epita.advjava.services.exceptions.DatamodelCreationException;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +22,7 @@ public class TestDatabaseConnection {
     }
 
     @Test
-    public void testCreate() throws SQLException {
+    public void testCreate() throws DatamodelCreationException, SQLException {
 
         //given (handled by setup())
         UsersDAO dao = new UsersDAO();
@@ -33,6 +35,13 @@ public class TestDatabaseConnection {
         dao.create(user);
 
         //then
+        ResultSet resultSet = this.connection.prepareStatement("SELECT * FROM USERS WHERE ID = 1").executeQuery();
+        String name = null;
+        while (resultSet.next()){
+            name = resultSet.getString("NAME");
+        }
+
+        Assertions.assertEquals(name, "Thomas");
 
     }    @Test
     public void testSearch() throws SQLException {
