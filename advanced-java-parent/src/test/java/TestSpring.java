@@ -1,3 +1,6 @@
+import fr.epita.advjava.UsersDAO;
+import fr.epita.advjava.datamodel.User;
+import fr.epita.advjava.services.exceptions.DatamodelCreationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -15,9 +18,16 @@ public class TestSpring {
     @Named("testDI")
     String helloWorld;
 
+    @Inject
+    UsersDAO dao;
+
     @Test
-    public void test(){
+    public void test() throws DatamodelCreationException {
         System.out.println(helloWorld);
+        User user = new User();
+        user.setId(0);
+        user.setName("Test");
+        dao.create(user);
     }
 
 

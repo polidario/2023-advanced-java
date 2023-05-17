@@ -5,15 +5,24 @@ import fr.epita.advjava.services.Configuration;
 import fr.epita.advjava.services.exceptions.DatamodelCreationException;
 import fr.epita.advjava.services.exceptions.DatamodelSearchException;
 
+import javax.sql.DataSource;
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UsersDAO {
 
+
+    private final DataSource source;
+
+    public UsersDAO(DataSource source){
+        this.source = source;
+    }
+
     public void create(User user) throws DatamodelCreationException {
         try {
-            Connection connection = Configuration.getConnection();
+            Connection connection = source.getConnection();
             PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO USERS(ID, NAME) VALUES (?, ?)");
             insertStatement.setInt(1, user.getId());
             insertStatement.setString(2, user.getName());
@@ -29,7 +38,7 @@ public class UsersDAO {
     public List<User> search(User criteria) throws DatamodelSearchException {
         List<User> users = new ArrayList<User>();
         try {
-            Connection connection = Configuration.getConnection();
+            Connection connection = source.getConnection();
             PreparedStatement selectStatement =
                     connection.prepareStatement("SELECT ID,NAME FROM USERS WHERE ID = ? AND NAME = ?");
             selectStatement.setString(2, criteria.getName());
