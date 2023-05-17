@@ -56,7 +56,7 @@ public class TestDatabaseConnection {
         User criteria = new User();
         criteria.setId(1);
         criteria.setName("Thomas");
-        List users = dao.search(criteria);
+        List<User> users = dao.search(criteria);
 
         //then
         Assertions.assertEquals(users.size(), 1);

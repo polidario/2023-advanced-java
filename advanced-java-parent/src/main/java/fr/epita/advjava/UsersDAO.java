@@ -26,8 +26,8 @@ public class UsersDAO {
     }
 
 
-    public List search(User criteria) throws DatamodelSearchException {
-        List users = new ArrayList();
+    public List<User> search(User criteria) throws DatamodelSearchException {
+        List<User> users = new ArrayList<User>();
         try {
             Connection connection = Configuration.getConnection();
             PreparedStatement selectStatement =
