@@ -30,8 +30,6 @@ public class TestDatabaseConnection {
 
 
 
-
-
     @Test
     public void testCreate() throws DatamodelCreationException, SQLException {
 
