@@ -37,8 +37,8 @@ public class UsersDAO {
 
     public List<User> search(User criteria) throws DatamodelSearchException {
         List<User> users = new ArrayList<User>();
-        try {
-            Connection connection = source.getConnection();
+        try ( Connection connection = source.getConnection();){
+
             PreparedStatement selectStatement =
                     connection.prepareStatement("SELECT ID,NAME FROM USERS WHERE ID = ? AND NAME = ?");
             selectStatement.setString(2, criteria.getName());
