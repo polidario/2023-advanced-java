@@ -36,6 +36,7 @@ public class SpringApplicationContext {
         localSessionFactoryBean.setPackagesToScan("fr.epita.advjava.datamodel");
         Properties properties = new Properties();
         properties.put("hibernate.hbm2ddl.auto", "create");
+        properties.put("hibernate.show_sql","true");
         properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 
         localSessionFactoryBean.setHibernateProperties(properties);
