@@ -6,9 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="advanced-java-parent" />
-        <module name="adv-java-mico-service" />
+        <module name="java-micro-service" />
+        <module name="java-core-data" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="adv-java-mico-service" target="19" />
+    </bytecodeTargetLevel>
   </component>
 </project>
